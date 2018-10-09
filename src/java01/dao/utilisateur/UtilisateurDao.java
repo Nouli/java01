@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Exception.UserNotFoundException;
 import java01.dao.ConnectDB;
 import java01.entity.Gender;
 import java01.entity.Utilisateur;
@@ -29,9 +30,10 @@ public class UtilisateurDao {
 	
 	}
 	
-	void delete(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void delete(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException ,UserNotFoundException {
 		ConnectDB connectDB = new ConnectDB();
 		try {
+			
 		PreparedStatement ps = connectDB.connection.prepareStatement("DELETE FROM  projet.utilisateur WHERE id = " + id + ";");
 		ps.executeUpdate();
 		System.out.println(":: SERVER :: Record was Deleted");
@@ -43,9 +45,10 @@ public class UtilisateurDao {
 		
 	}
 	
-	void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		ConnectDB connectDB = new ConnectDB();
 	try {
+		UtilisateurDao.select(id);
 		String query = "UPDATE projet.utilisateur SET firstName = ? ,lastName = ? ,gender = ? ,age = ? WHERE id = ?";
 		PreparedStatement ps = connectDB.connection.prepareStatement(query);
 		ps.setString(1, user.getFirstName());
@@ -55,17 +58,17 @@ public class UtilisateurDao {
 		ps.setInt(5, id);
 		ps.executeUpdate();
 		System.out.println(":: SERVER :: Record was Updated");
-	} catch (SQLException e ) {	
+	} catch (UserNotFoundException e ) {	
 
 		System.out.println(":: SERVER :: Update not successful");
 	}
 	}
 
-	ArrayList<Utilisateur> findAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public ArrayList<Utilisateur> findAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
 		ConnectDB connectDB = new ConnectDB();
 		Statement st = null;
 		ArrayList utilisateurs = new ArrayList();
-		try {
+
 			String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur order by id";
 			st = connectDB.connection.createStatement();
 			ResultSet rs;
@@ -77,18 +80,16 @@ public class UtilisateurDao {
 				utilisateurs.add(user);
 							}
 			
-		}catch(SQLException e ){
-			System.out.println(":: SERVER :: Update not successful");	
-		}finally {
-			if(st != null) {st.close();}
-		}
+		
+			if(st != null) {st.close();
+			}
 		return utilisateurs;
 	}
-	Utilisateur find(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public static Utilisateur select(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
 		ConnectDB connectDB = new ConnectDB();
-		Utilisateur user = new Utilisateur();
+		Utilisateur user = null;
 		Statement st = null;
-		try {
+
 		String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur Where id=";
 		st = connectDB.connection.createStatement();
 		ResultSet rs;
@@ -98,13 +99,15 @@ public class UtilisateurDao {
 			Gender gender = Enum.valueOf(Gender.class, rs.getString("gender"));
 			user= new Utilisateur (rs.getLong("id"),rs.getString("firstName"),rs.getString("lastName"),gender,rs.getInt("age"));
 						}
+		if(user == null) {
+			throw new UserNotFoundException();
+		}
+		else {
+			st.close();
+			return user;
+		}
 		
-	}catch(SQLException e ){
-		System.out.println(":: SERVER :: Update not successful");	
-	}finally {
-		if(st != null) {st.close();}
-	}
-		return user;
+		
 	}
 }
 	
