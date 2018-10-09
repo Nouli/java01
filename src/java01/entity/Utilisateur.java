@@ -1,4 +1,4 @@
-package java01;
+package java01.entity;
 
 public class Utilisateur {
 	
@@ -22,6 +22,16 @@ public class Utilisateur {
 		System.out.println(this.toString());
 		
 	}
+	public Utilisateur(long id,String firstName, String lastName, Gender gender, int age) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.age = age;
+		
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -55,8 +65,8 @@ public class Utilisateur {
 
 	@Override
 	public String toString() {
-		return "Utilisateur [firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender + ", age=" + age
-				+ "]";
+		return "id= "+ id +", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender + ", age=" + age
+				+ "";
 	}
 	
 	

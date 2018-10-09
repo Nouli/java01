@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import java01.Utilisateur;
 import java01.dao.ConnectDB;
+import java01.entity.Gender;
+import java01.entity.Utilisateur;
 
 public class UtilisateurDao {
 	 
@@ -59,8 +61,28 @@ public class UtilisateurDao {
 	}
 	}
 
-/*	List<Utilisateur> findAll() {
-		
-	}*/
+	ArrayList<Utilisateur> findAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		ConnectDB connectDB = new ConnectDB();
+		Statement st = null;
+		ArrayList utilisateurs = new ArrayList();
+		try {
+			String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur order by id";
+			st = connectDB.connection.createStatement();
+			ResultSet rs;
+			rs = st.executeQuery(query);
+			while ( rs.next() ) {
+				
+				Gender gender = Enum.valueOf(Gender.class, rs.getString("gender"));
+				Utilisateur user= new Utilisateur (rs.getLong("id"),rs.getString("firstName"),rs.getString("lastName"),gender,rs.getInt("age"));
+				utilisateurs.add(user);
+							}
+			
+		}catch(SQLException e ){
+			System.out.println(":: SERVER :: Update not successful");	
+		}finally {
+			if(st != null) {st.close();}
+		}
+		return utilisateurs;
+	}
 }
 	

@@ -17,5 +17,6 @@ public ConnectDB() throws InstantiationException, IllegalAccessException, ClassN
  
 	 Class.forName("com.mysql.jdbc.Driver").newInstance();
 	 connection = DriverManager.getConnection(url, username, password);
+	 
 }
  }
