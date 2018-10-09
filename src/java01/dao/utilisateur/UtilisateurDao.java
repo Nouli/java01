@@ -84,5 +84,27 @@ public class UtilisateurDao {
 		}
 		return utilisateurs;
 	}
+	Utilisateur find(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		ConnectDB connectDB = new ConnectDB();
+		Utilisateur user = new Utilisateur();
+		Statement st = null;
+		try {
+		String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur Where id=";
+		st = connectDB.connection.createStatement();
+		ResultSet rs;
+		rs = st.executeQuery(query + id );
+		while ( rs.next() ) {
+			
+			Gender gender = Enum.valueOf(Gender.class, rs.getString("gender"));
+			user= new Utilisateur (rs.getLong("id"),rs.getString("firstName"),rs.getString("lastName"),gender,rs.getInt("age"));
+						}
+		
+	}catch(SQLException e ){
+		System.out.println(":: SERVER :: Update not successful");	
+	}finally {
+		if(st != null) {st.close();}
+	}
+		return user;
+	}
 }
 	

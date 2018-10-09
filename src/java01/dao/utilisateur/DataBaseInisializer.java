@@ -94,11 +94,37 @@ public class DataBaseInisializer {
 			    System.out.println(menu);
 			    break;
 			  case 3:
-			    System.out.println("3");
+				   	System.out.println("Inserer l'Id correspendante à l'utilisateur que vous souhaiter modifier ;(pour annuler taper 0) :");
+			    	System.out.println("----------------------------------------------------------------------------------------------");
 			    System.out.println(menu);
+			    break;
 			  case 4:
-				    System.out.println("4");
-				    System.out.println(menu);
+				    
+				    String chiffre = sc.nextLine();
+				    while(isInteger(chiffre)==false) {
+				    	System.out.println("pensez à taper des chiffres");
+				    	System.out.println("Inserer l'Id correspendante à l'utilisateur que vous souhaiter supprimer ;(pour annuler taper 0) :");
+				    	System.out.println("----------------------------------------------------------------------------------------------");
+				    	chiffre = sc.nextLine();
+				    }
+				    int id = Integer.parseInt(chiffre);
+				    	switch (id)
+						{
+						case 0:
+							System.out.println(menu);
+						break;
+						default:
+							String reponse = "N";
+							while(reponse.equals("Y")==false && reponse.equals("y")==false) {
+								System.out.println("Êtes-vous sûr de vouloir supprimer cet utilisateur ?(Y/N) '");
+								System.out.println(utilisateurDao.find(id).toString());
+								reponse = sc.nextLine();
+								System.out.println(reponse);
+							}
+							utilisateurDao.delete(id);
+							System.out.println(menu);
+						}
+				 
 			    break;
 			  case 5:
 				    System.out.println("Déconnexion");
