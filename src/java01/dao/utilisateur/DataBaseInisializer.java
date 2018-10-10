@@ -22,8 +22,12 @@ public class DataBaseInisializer {
 	}
 	public static void main(String[] args) throws AppDataAccessException, UserNotFoundException  {
 		UtilisateurDao utilisateurDao = new UtilisateurDao();
-		utilisateurDao.select(12);
+		try {
+		utilisateurDao.delete(26);
+		}catch(UserNotFoundException e) {
+		System.out.println("l'Utilisateur choisis n'existe pas");
 		}
+	}
 
 }
 

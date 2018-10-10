@@ -99,14 +99,14 @@ public class Main {
 			  case "2":			    
 			    try {
 					utilisateurDao.add(insertUtilisateur());
-				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+				} catch (Exception e1) {
+					// TODO Auto-generated catchblock
 					e1.printStackTrace();
 				}
 			    System.out.println(menu);
 			    break;
 			  case "3":
-				   	
+				  System.out.println("Inserer ID de l'utilisateur que vous souhaitez modifier");
 			    		valeur = sc.nextLine();
 					    id = IdInteger(valeur);
 				try {
@@ -118,7 +118,8 @@ public class Main {
 			    
 			    System.out.println(menu);
 			    break;
-			  case "4":	    
+			  case "4":	
+				  	System.out.println("Inserer ID de l'utilisateur que vous souhaitez supprimer");
 				    valeur = sc.nextLine();
 				    
 				    id = IdInteger(valeur);

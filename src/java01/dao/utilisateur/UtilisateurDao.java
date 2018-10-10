@@ -19,7 +19,7 @@ public class UtilisateurDao {
 	 
 	ConnectDB connectDB = ConnectDB.getInstance();
 
-	public void add(Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, AppDataAccessException {
+	public void add(Utilisateur user) throws AppDataAccessException {
 	try {
 		 String query = "insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")";
 		 connectDB.setPs(connectDB.getConnection().prepareStatement(query));
@@ -32,9 +32,9 @@ public class UtilisateurDao {
 	
 	}
 	public  Utilisateur select(long id) throws AppDataAccessException ,UserNotFoundException{
-		
-		try {
 		Utilisateur user = null;
+		try {
+		
 		
 		String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur Where id=";
 		connectDB.setSt(connectDB.getConnection().createStatement());
@@ -45,35 +45,37 @@ public class UtilisateurDao {
 			Gender gender = Enum.valueOf(Gender.class, connectDB.getRs().getString("gender"));
 			user= new Utilisateur (connectDB.getRs().getLong("id"),connectDB.getRs().getString("firstName"),connectDB.getRs().getString("lastName"),gender,connectDB.getRs().getInt("age"));
 						}
+		}catch(Exception e) {
+			throw new AppDataAccessException();
+		}
 		if(user == null) {
-			throw new UserNotFoundException();
+			
+				throw new UserNotFoundException();
 		}
 		else {
 			return user;
-		}
-		}catch(Exception e) {
-			throw new AppDataAccessException();
 		}
 		
 		
 	}
 	public void delete(int id) throws AppDataAccessException,UserNotFoundException {
 		 	UtilisateurDao utilisateurDao = new UtilisateurDao();
-			try {
-				Utilisateur user = null;
+		 	Utilisateur user = null;
+		 	try {
+				
 				user = utilisateurDao.select(id);
-				if(user == null) {
-					throw new UserNotFoundException();
-				}
-				String query = "DELETE FROM  projet.utilisateur WHERE id = " + id + ";";
+				String query = "DELETE FROM  projet.utilisateur WHERE id = ?";
 				connectDB.setPs(connectDB.getConnection().prepareStatement(query));
-				connectDB.getPs().executeQuery();
+				connectDB.getPs().setLong(1, id);
+				connectDB.getPs().executeUpdate();
 			
 				System.out.println(":: SERVER :: Record was Deleted");
-			}catch (Exception e) {
+			}catch (UserNotFoundException e) {
+				throw new UserNotFoundException();
+		}
+		 	catch (Exception e) {
 					throw new AppDataAccessException();
 			}
-		
 		
 		
 	}
@@ -117,5 +119,6 @@ public class UtilisateurDao {
 		}
 		return utilisateurs;
 	}
+
 }
 	
