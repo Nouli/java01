@@ -13,6 +13,7 @@ public class ConnectDB {
  private String url= "jdbc:mysql://localhost:3306/" +databaseName;
  private String username = "root";
  private String password = "";
+ 
  	public static ConnectDB getInstance() {
  		return instance;
  	}
