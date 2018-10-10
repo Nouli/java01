@@ -20,12 +20,7 @@ public class DataBaseInisializer {
 	UtilisateurDao utilisateurDao = new UtilisateurDao();
 	}
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
-		UtilisateurDao utilisateurDao = new UtilisateurDao();
-		try {
-		utilisateurDao.select(1228);
-		}catch (UserNotFoundException e) {
-			System.out.println("User not found");
-			}
+	
 		}
 
 }

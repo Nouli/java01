@@ -21,7 +21,7 @@ public class UtilisateurDao {
 	UtilisateurDao utilisateurDao = new UtilisateurDao();
 	public void add(Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 	try {
-		 connectDB.getConnection().prepareStatement("insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")");
+		 PreparedStatement ps = connectDB.getConnection().prepareStatement("insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")");
 		 System.out.println(":: SERVER :: Record was Insered");
 		 ps.executeUpdate();
 	} catch (SQLException e ) {	
@@ -29,7 +29,7 @@ public class UtilisateurDao {
 	}
 	
 	}
-	
+	/*
 	public void delete(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException ,UserNotFoundException {
 		try {
 		String query = "DELETE FROM  projet.utilisateur WHERE id = " + id + ";";	
@@ -43,7 +43,7 @@ public class UtilisateurDao {
 		
 	}
 	
-	/*public void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 
 	try {
 		utilisateurDao.select(id);
