@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class ConnectDB {
  private static ConnectDB instance = new ConnectDB();
  private Connection connection;
- private PreparedStatement ps;
+ //private PreparedStatement ps;
  private String databaseName = "";
  private String url= "jdbc:mysql://localhost:3306/" +databaseName;
  private String username = "root";
@@ -29,9 +29,10 @@ public class ConnectDB {
 	public Connection getConnection() {
 		return connection;
 	}
+	/*
 	public PreparedStatement prepareStatement(String query) throws SQLException {
 		return connection.prepareStatement(query);
-	}
+	}*/
 
 
  }

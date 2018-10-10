@@ -1,6 +1,6 @@
 package java01.dao.utilisateur;
 
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,17 +11,17 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import Exception.UserNotFoundException;
-import java01.dao.ConnectDB;
+import SqlUtils.ConnectDB;
 import java01.entity.Gender;
 import java01.entity.Utilisateur;
 
 public class UtilisateurDao {
 	 
-	 
+	ConnectDB connectDB = ConnectDB.getInstance();
+	UtilisateurDao utilisateurDao = new UtilisateurDao();
 	public void add(Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		 ConnectDB connectDB = new ConnectDB();
 	try {
-		 PreparedStatement ps = connectDB.connection.prepareStatement("insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")");
+		 connectDB.getConnection().prepareStatement("insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")");
 		 System.out.println(":: SERVER :: Record was Insered");
 		 ps.executeUpdate();
 	} catch (SQLException e ) {	
@@ -31,11 +31,9 @@ public class UtilisateurDao {
 	}
 	
 	public void delete(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException ,UserNotFoundException {
-		ConnectDB connectDB = new ConnectDB();
 		try {
-			
-		PreparedStatement ps = connectDB.connection.prepareStatement("DELETE FROM  projet.utilisateur WHERE id = " + id + ";");
-		ps.executeUpdate();
+		String query = "DELETE FROM  projet.utilisateur WHERE id = " + id + ";";	
+		connectDB.prepareStatement(query).executeQuery();
 		System.out.println(":: SERVER :: Record was Deleted");
 		} catch (SQLException e ) {	
 
@@ -45,12 +43,12 @@ public class UtilisateurDao {
 		
 	}
 	
-	public void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		ConnectDB connectDB = new ConnectDB();
+	/*public void update(int id,Utilisateur user) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+
 	try {
-		UtilisateurDao.select(id);
+		utilisateurDao.select(id);
 		String query = "UPDATE projet.utilisateur SET firstName = ? ,lastName = ? ,gender = ? ,age = ? WHERE id = ?";
-		PreparedStatement ps = connectDB.connection.prepareStatement(query);
+		PreparedStatement ps = connectDB.prepareStatement(query);
 		ps.setString(1, user.getFirstName());
 		ps.setString(2, user.getLastName());
 		ps.setString(3, user.getGender());
@@ -65,12 +63,11 @@ public class UtilisateurDao {
 	}
 
 	public ArrayList<Utilisateur> findAll() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
-		ConnectDB connectDB = new ConnectDB();
 		Statement st = null;
 		ArrayList utilisateurs = new ArrayList();
 
 			String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur order by id";
-			st = connectDB.connection.createStatement();
+			st = connectDB.getConnection().createStatement();
 			ResultSet rs;
 			rs = st.executeQuery(query);
 			while ( rs.next() ) {
@@ -85,13 +82,12 @@ public class UtilisateurDao {
 			}
 		return utilisateurs;
 	}
-	public static Utilisateur select(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
-		ConnectDB connectDB = new ConnectDB();
+	public  Utilisateur select(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
 		Utilisateur user = null;
 		Statement st = null;
 
 		String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur Where id=";
-		st = connectDB.connection.createStatement();
+		st = connectDB.getConnection().createStatement();
 		ResultSet rs;
 		rs = st.executeQuery(query + id );
 		while ( rs.next() ) {
@@ -108,6 +104,6 @@ public class UtilisateurDao {
 		}
 		
 		
-	}
+	}*/
 }
 	
