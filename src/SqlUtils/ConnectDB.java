@@ -3,12 +3,16 @@ package SqlUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ConnectDB {
  private static ConnectDB instance = new ConnectDB();
- private Connection connection;
- private PreparedStatement ps;
+ private Connection connection=null;
+ private PreparedStatement ps=null;
+ private Statement st=null;
+ private ResultSet rs=null;
  private String databaseName = "";
  private String url= "jdbc:mysql://localhost:3306/" +databaseName;
  private String username = "root";
@@ -30,10 +34,24 @@ public class ConnectDB {
 	public Connection getConnection() {
 		return connection;
 	}
-	/*
-	public PreparedStatement prepareStatement(String query) throws SQLException {
-		return connection.prepareStatement(query);
-	}*/
-
+	public PreparedStatement getPs() {
+		return ps;
+	}
+	public void setPs(PreparedStatement ps) {
+		this.ps = ps;
+	}
+	public Statement getSt() {
+		return st;
+	}
+	public void setSt(Statement st) {
+		this.st = st;
+	}
+	public ResultSet getRs() {
+		return rs;
+	}
+	public void setRs(ResultSet rs) {
+		this.rs = rs;
+	}
+	
 
  }

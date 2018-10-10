@@ -1,10 +1,11 @@
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.EnumUtils;
 
+import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
 import java01.dao.utilisateur.DataBaseInisializer;
 import java01.dao.utilisateur.UtilisateurDao;
@@ -24,7 +25,7 @@ public class Main {
 	    // only got here if we didn't return false
 	    return true;
 	}
-/*	
+
 	private static Utilisateur insertUtilisateur() {
 			Scanner sc = new Scanner(System.in);
 		 	System.out.println("Insert FirstName : ");
@@ -67,8 +68,7 @@ public class Main {
 		    return Integer.parseInt(valeur);
 	}
 	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, UserNotFoundException {
-		DataBaseInisializer	initDataBase = new DataBaseInisializer() ;
+	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
 		UtilisateurDao utilisateurDao = new UtilisateurDao();
 		String answer = "";
 		int id ;
@@ -97,7 +97,12 @@ public class Main {
 					System.out.println(menu);
 			    break;
 			  case "2":			    
-			    utilisateurDao.add(insertUtilisateur());
+			    try {
+					utilisateurDao.add(insertUtilisateur());
+				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			    System.out.println(menu);
 			    break;
 			  case "3":
@@ -143,5 +148,4 @@ public class Main {
 			
 		}
 	}
-*/
 }
