@@ -134,11 +134,13 @@ public class Main {
 								System.out.println(reponse);						
 						
 							utilisateurDao.delete(id);
-							System.out.println(menu);
 							}
 						 }catch(UserNotFoundException e){
 							 System.out.println("l'Utilisateur choisis n'existe pas");
-						 }		  
+						 }catch(AppDataAccessException e) {
+							 System.out.println("Cannot Access Data");
+						 }
+				    System.out.println(menu);    
 			    break;
 			  case "5":
 				    System.out.println("Déconnexion");
