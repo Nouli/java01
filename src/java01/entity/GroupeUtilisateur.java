@@ -1,12 +1,13 @@
 package java01.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GroupeUtilisateur {
 	private long id;
 	private Role name;
-	private List<Utilisateur> utilisateurs;
+	private List<Utilisateur> utilisateurs  = new ArrayList<Utilisateur>();
 	public Role getName() {
 		return name;
 	}
@@ -36,6 +37,16 @@ public class GroupeUtilisateur {
 	public GroupeUtilisateur(Role name) {
 		super();
 		this.name = name;
+	}
+	public void addUser(Utilisateur user) {
+		this.utilisateurs.add(user);
+	}
+	public void deleteUser(Utilisateur user) {
+		this.utilisateurs.remove(user);
+	}
+	@Override
+	public String toString() {
+		return "GroupeUtilisateur [name=" + name + ", utilisateurs=" + utilisateurs.toString() + "]";
 	}
 	
 }

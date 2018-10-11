@@ -18,8 +18,8 @@ public class GroupeUtilisateurDao {
 	public void add(GroupeUtilisateur groupe) throws AppDataAccessException {
 	try {
 		 String query = "insert into  projet.groupe_utilisateur (name) values ('"+groupe.getName()+"')";
-		 connectDB.setPs(connectDB.getConnection().prepareStatement(query));
-		 connectDB.getPs().executeUpdate();
+		 connectDB.prepare(query);
+		 connectDB.executeUpdate();
 		 System.out.println(":: SERVER :: Record was Insered");
 		}catch (Exception e ) {	
 		throw new AppDataAccessException();
@@ -28,13 +28,10 @@ public class GroupeUtilisateurDao {
 	public  GroupeUtilisateur select(long id) throws AppDataAccessException ,UserNotFoundException{
 		GroupeUtilisateur groupe = null;
 		try {
-		
-		
-		String query = "SELECT id ,name  FROM projet.groupe_utilisateur Where id=";
-		connectDB.setSt(connectDB.getConnection().createStatement());
+				String query = "SELECT id ,name  FROM projet.groupe_utilisateur Where id=";
 	
-		connectDB.setRs(connectDB.getSt().executeQuery(query + id ));
-		while ( connectDB.getRs().next() ) {
+		connectDB.executeQuery(query + id );
+		while ( connectDB.next() ) {
 	
 			Role name = Enum.valueOf(Role.class, connectDB.getRs().getString("name"));
 			groupe= new GroupeUtilisateur (name);

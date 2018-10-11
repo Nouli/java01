@@ -7,8 +7,13 @@ public class Utilisateur {
 	private String lastName;
 	private Gender gender;
 	private int age;
+	private GroupeUtilisateur groupe;
 	
 	
+	public GroupeUtilisateur getGroupe() {
+		return groupe;
+	}
+
 	public Utilisateur() {
 
 	}

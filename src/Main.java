@@ -81,7 +81,7 @@ public class Main {
 		
 		System.out.println(menu);
 		
-		while ( answer.equals("5")==false) {
+		while (!"5".equals(answer)) {
 			System.out.println(" taper le chiffre correspendant à la commande que vous souhaitez executer ");
 			Scanner sc = new Scanner(System.in);
 			answer = sc.nextLine();	
