@@ -14,10 +14,10 @@ public class Utilisateur {
 		return groupe;
 	}
 
+
 	public Utilisateur() {
 
 	}
-
 	public Utilisateur(String firstName, String lastName, Gender gender, int age) {
 		super();
 		this.firstName = firstName;

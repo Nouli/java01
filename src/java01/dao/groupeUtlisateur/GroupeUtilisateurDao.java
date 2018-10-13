@@ -3,6 +3,7 @@ package java01.dao.groupeUtlisateur;
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
 import SqlUtils.ConnectDB;
+import SqlUtils.DataAccess;
 import java01.entity.Gender;
 import java01.entity.GroupeUtilisateur;
 import java01.entity.Role;

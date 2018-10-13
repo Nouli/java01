@@ -1,7 +1,13 @@
 package java01.dao.groupeUtlisateur;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
+import SqlUtils.ConnectDB;
 import java01.dao.utilisateur.UtilisateurDao;
 import java01.entity.GroupeUtilisateur;
 import java01.entity.Role;
@@ -9,23 +15,22 @@ import java01.entity.Utilisateur;
 
 public class TestgroupeDao {
 
-	public static void main(String[] args) throws AppDataAccessException, UserNotFoundException {
+	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			SQLException, UserNotFoundException {
 		// TODO Auto-generated method stub
+		ConnectDB connectDB = ConnectDB.getInstance();
 		GroupeUtilisateurDao groupeDao = new GroupeUtilisateurDao();
 		GroupeUtilisateur groupe = new GroupeUtilisateur(Role.user);
 		UtilisateurDao userDao = new UtilisateurDao();
-		try {
-		groupeDao.select(1);
-		}catch(UserNotFoundException e){
-			System.out.println("Groupe Not found");
+		/*
+		 *
+		 **/ try {
+			Utilisateur user1 = new Utilisateur();
+			user1 = userDao.select(14);
+			System.out.println(user1.toString());
+		} catch (Exception e) {
+			System.out.println("User Not found");
 		}
-		Utilisateur user1 = userDao.select(25);
-		Utilisateur user2 = userDao.select(10);
-		groupe.addUser(user1);
-		groupe.addUser(user2);
-		System.out.println(groupe.toString());
-		groupe.deleteUser(user2);
-		System.out.println(groupe.toString());
 	}
-
 }

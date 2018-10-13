@@ -2,6 +2,7 @@ package java01.dao.utilisateur;
 
 
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
 import SqlUtils.ConnectDB;
+import SqlUtils.DataAccess;
 import java01.entity.Gender;
 import java01.entity.Utilisateur;
 
@@ -19,6 +21,7 @@ public class UtilisateurDao {
 
 	public void add(Utilisateur user) throws AppDataAccessException {
 	try {
+		//connectDB.insert(user);
 		 String query = "insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")";
 		 connectDB.prepare(query);
 		 connectDB.executeUpdate();
@@ -28,31 +31,10 @@ public class UtilisateurDao {
 	}
 	
 	}
-	public  Utilisateur select(long id) throws AppDataAccessException ,UserNotFoundException{
-		Utilisateur user = null;
-		try {
-		
-		
-		String query = "SELECT id ,firstName ,lastname ,gender ,age FROM projet.utilisateur Where id=";
-	
-		connectDB.executeQuery(query + id);
-		while ( connectDB.next() ) {
-	
-			Gender gender = Enum.valueOf(Gender.class, connectDB.getRs().getString("gender"));
-			user= new Utilisateur (connectDB.getLong("id"),connectDB.getString("firstName"),connectDB.getString("lastName"),gender,connectDB.getInt("age"));
-						}
-		}catch(Exception e) {
-			throw new AppDataAccessException();
-		}
-		if(user == null) {
-			
-				throw new UserNotFoundException();
-		}
-		else {
-			return user;
-		}
-		
-		
+	public  Utilisateur select(int id) throws AppDataAccessException ,UserNotFoundException{
+		Utilisateur user = new Utilisateur();
+		 user =(Utilisateur) connectDB.select(user,id);
+		 return user;
 	}
 	public void delete(int id) throws AppDataAccessException,UserNotFoundException {
 		 	UtilisateurDao utilisateurDao = new UtilisateurDao();
@@ -60,7 +42,7 @@ public class UtilisateurDao {
 		 	try {
 				
 				user = utilisateurDao.select(id);
-				String query = "DELETE FROM  projet.utilisateur WHERE id = ?";
+				String query = "DELETE FROM  tilisateur WHERE id = ?";
 				connectDB.prepare(query);
 				connectDB.setLong(1, id);
 				connectDB.executeUpdate();
