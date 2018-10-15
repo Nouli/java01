@@ -9,19 +9,21 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
-import java.util.Hashtable;
+
 import java.util.List;
-import java.util.Optional;
+
 import java.util.Vector;
+
 
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
-import java01.entity.Gender;
-import java01.entity.Utilisateur;
+import java01.entity.Entity;
 
-public class ConnectDB<T> {
+
+
+public class ConnectDB {
 	private static Connection connection = null;
 	private PreparedStatement ps = null;
 	private Statement st = null;
@@ -51,35 +53,6 @@ public class ConnectDB<T> {
 		}
 	}
 
-	public Connection getConnection() {
-		return connection;
-	}
-
-	public PreparedStatement getPs() {
-		return ps;
-	}
-
-	public void setPs(PreparedStatement ps) {
-		this.ps = ps;
-	}
-
-	public Statement getSt() {
-
-		return st;
-	}
-
-	public void setSt(Statement st) {
-		this.st = st;
-	}
-
-	public ResultSet getRs() {
-		return rs;
-	}
-
-	public void setRs(ResultSet rs) {
-		this.rs = rs;
-	}
-
 	// ResultSet.executeQuery()
 	public void executeQuery(String query) throws SQLException {
 		st = connection.createStatement();
@@ -104,27 +77,6 @@ public class ConnectDB<T> {
 			return false;
 		}
 	}
-
-	// rs.getString()
-	public String getString(String string) throws SQLException {
-		return rs.getString(string);
-	}
-
-	// rs.getInt()
-	public int getInt(String j) throws SQLException {
-		return rs.getInt(j);
-	}
-
-	// rs.getLong()
-	public long getLong(String j) throws SQLException {
-		return rs.getLong(j);
-	}
-
-	// ps.setLong
-	public void setLong(int i, long j) throws SQLException {
-		ps.setLong(i, j);
-	}
-
 	public void setString(int i, String string) throws SQLException {
 		ps.setString(i, string);
 	}
@@ -134,8 +86,101 @@ public class ConnectDB<T> {
 	}
 	//SqlUtils Update
 
+	public <T extends Entity> void update (T t,int id) throws UserNotFoundException, AppDataAccessException {
+			List<Field> privateFields = new ArrayList<>();
+			Field[] allFields = t.getClass().getDeclaredFields();
+			//UPDATE `projet`.`utilisateur` SET `firstName` = 'amma', `lastName` = 'moo', `gender` = 'female', `age` = '222' WHERE (`id` = '12');
+			this.databaseName=t.getClass().getSimpleName();
+
+			try {
+
+				String query1 = "SELECT * FROM "+databaseName+"";
+				connectDB.executeQuery(query1);
+				String query = "UPDATE "+databaseName+" SET";
+				if (rs != null) {
+					ResultSetMetaData columns = rs.getMetaData();
+					int i = 0;
+					while (rs.next() && i==0) {
+						int j = 1;
+						while (j < columns.getColumnCount()) {
+							j++;
+							for (Field field : allFields) {
+								if (Modifier.isPrivate(field.getModifiers())) {
+									privateFields.add(field);
+									if (field.getName().toString().equals(columns.getColumnLabel(j))) {
+										field.setAccessible(true);
+										query +=" "+"`"+columns.getColumnLabel(j)+"`="+"'"+field.get(t)+"' ,";
+										}
+									}
+
+								}
+							}
+						i++;
+						}
+					
+					}
+				query = query.substring(0, query.length()-2);
+				query +="where ( id = "+id+")";
+				System.out.println(query);	
+				connectDB.prepare(query);
+				connectDB.executeUpdate();
+					
+				}	catch(Exception e){
+				e.printStackTrace();
+			}
+		
+	}
+	//SqlUtils Insert
+	public <T extends Entity> void insert (T t) throws UserNotFoundException, AppDataAccessException {
+		ArrayList<String> results = new ArrayList<String>();
+		List<Field> privateFields = new ArrayList<>();
+		Field[] allFields = t.getClass().getDeclaredFields();
+		
+		try {
+
+			//INSERT INTO `projet`.`utilisateur` (firstName, lastName, gender, age) VALUES ('atat', 'yaya', 'male', '155');
+
+			this.databaseName=t.getClass().getSimpleName();
+			String query1 = "SELECT * FROM utilisateur";
+			String query = "INSERT INTO "+databaseName+" (";
+			connectDB.executeQuery(query1);
+			if (rs != null) {
+				ResultSetMetaData columns = rs.getMetaData();
+				int i = 1;
+				while (i < columns.getColumnCount()) {
+					i++;
+					query += columns.getColumnLabel(i)+", ";
+					results.add(columns.getColumnLabel(i));	
+				}	
+				query = query.substring(0, query.length()-2);
+				query += ") VALUES (";
+					System.out.println(query);
+					for (Field field : allFields) {
+						if (Modifier.isPrivate(field.getModifiers())) {
+							privateFields.add(field);
+							
+							if (results.contains(field.getName().toString())) {
+								field.setAccessible(true);
+								field.get(t);
+								query+=" '"+field.get(t)+"' ,";
+								
+								}
+							}
+
+						}
+				
+					query = query.substring(0, query.length()-2);
+					query +=")";
+	
+					connectDB.prepare(query);
+					connectDB.executeUpdate();
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	// SqlUtils Delete :
-	public void delete	(Class c, int id) throws UserNotFoundException, AppDataAccessException {
+	public <T extends Entity> void delete	(Class<T> c, int id) throws UserNotFoundException, AppDataAccessException {
 		try {
 			select(c, id);
 			String query = "DELETE FROM  "+databaseName+"  WHERE id = ?";
@@ -148,29 +193,23 @@ public class ConnectDB<T> {
 			e.printStackTrace();
 		}
 	}
-	public Object select(Class c, int id) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		ArrayList results = new ArrayList();
-		Object t = c.newInstance();
+	public <T extends Entity> T select(Class<T> c, int id) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		ArrayList<HashMap<String, Object>> results = new ArrayList<HashMap<String, Object>>();
+		T t = c.newInstance();
 		try {
-		// object
-		Class cls = c.getClass();
-		Constructor ct = c.getConstructor();
 		List<Field> privateFields = new ArrayList<>();
 		Field[] allFields = c.getDeclaredFields();
 
 		// Execute SQL query
 		
 		this.databaseName=c.getSimpleName();
-		//String query = "SELECT * FROM "+databaseName+" Where id=";
-		String query = "SELECT * FROM utilisateur Where id=";
-		
-		this.executeQuery(query + id);
+		String query = "SELECT * FROM "+databaseName+" Where id=";
+		connectDB.executeQuery(query+id);
 		if (rs != null) {
 			ResultSetMetaData columns = rs.getMetaData();
-			int i = 0;
 			int count = columns.getColumnCount();
 			while (rs.next()) {
-				HashMap cols = new HashMap(count);
+				HashMap<String, Object> cols = new HashMap<String, Object>(count);
 				int j = 0;
 				while (j < columns.getColumnCount()) {
 					j++;
@@ -200,8 +239,7 @@ public class ConnectDB<T> {
 
 				}
 				results.add(cols);
-			}
-			
+			}		
 		}
 		}catch(Exception e){
 			e.printStackTrace();

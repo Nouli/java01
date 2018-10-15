@@ -1,6 +1,6 @@
 package java01.entity;
 
-public class Utilisateur {
+public class Utilisateur extends Entity{
 	
 	private long id;
 	private String firstName;

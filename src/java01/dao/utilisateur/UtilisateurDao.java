@@ -2,30 +2,19 @@ package java01.dao.utilisateur;
 
 
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
 import SqlUtils.ConnectDB;
-import SqlUtils.DataAccess;
-import java01.entity.Gender;
+
 import java01.entity.Utilisateur;
 
 public class UtilisateurDao {
 	 
 	ConnectDB connectDB = ConnectDB.getInstance();
 
-	public void add(Utilisateur user) throws AppDataAccessException {
+	public void insert(Utilisateur user) throws AppDataAccessException {
 	try {
-		//connectDB.insert(user);
-		 String query = "insert into  projet.utilisateur (firstName,lastName,gender,age) values ('"+user.getFirstName()+"','"+user.getLastName()+"','"+user.getGender()+"',"+user.getAge()+")";
-		 connectDB.prepare(query);
-		 connectDB.executeUpdate();
-		 System.out.println(":: SERVER :: Record was Insered");
+		connectDB.insert(user);
 		}catch (Exception e ) {	
 		throw new AppDataAccessException();
 	}
@@ -38,32 +27,16 @@ public class UtilisateurDao {
 	}
 	public void delete(int id) throws AppDataAccessException,UserNotFoundException {
 	
-		
-		//connectDB.delete(user,id);
+		connectDB.delete(Utilisateur.class,id);
 		
 	}
 
-	public void update(int id,Utilisateur user) throws AppDataAccessException ,UserNotFoundException{
+	public void update(Utilisateur user,int id) throws AppDataAccessException ,UserNotFoundException{
 
-	try {
-		UtilisateurDao utilisateurDao = new UtilisateurDao();
-		utilisateurDao.select(id);
-		String query = "UPDATE projet.utilisateur SET firstName = ? ,lastName = ? ,gender = ? ,age = ? WHERE id = ?";
-		connectDB.setPs(connectDB.getConnection().prepareStatement(query));
-		
-		connectDB.setString(1, user.getFirstName());
-		connectDB.setString(2, user.getLastName());
-		connectDB.setString(3, user.getGender());
-		connectDB.setInt(4, user.getAge());
-		connectDB.setInt(5, id);
-		connectDB.executeUpdate();
-		System.out.println(":: SERVER :: Record was Updated");
-	} catch (Exception e ) {	
+		connectDB.update(user, id);
 
-		throw new AppDataAccessException();
 	}
-	}
-
+/*
 	public ArrayList<Utilisateur> findAll() throws  AppDataAccessException, UserNotFoundException {
 		ArrayList utilisateurs = new ArrayList();
 	try{
@@ -80,6 +53,6 @@ public class UtilisateurDao {
 		}
 		return utilisateurs;
 	}
-
+*/
 }
 	

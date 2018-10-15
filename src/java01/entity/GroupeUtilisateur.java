@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GroupeUtilisateur {
-	private long id;
+public class GroupeUtilisateur extends Entity{
 	private Role name;
 	private List<Utilisateur> utilisateurs  = new ArrayList<Utilisateur>();
 	public Role getName() {
@@ -22,7 +21,6 @@ public class GroupeUtilisateur {
 	}
 	public GroupeUtilisateur(long id, Role name, List<Utilisateur> utilisateurs) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.utilisateurs = utilisateurs;
 	}
