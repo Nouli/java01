@@ -31,31 +31,15 @@ public class UtilisateurDao {
 	}
 	
 	}
-	public  Utilisateur select(int id) throws AppDataAccessException ,UserNotFoundException{
-		Utilisateur user = new Utilisateur();
-		 user =(Utilisateur) connectDB.select(user,id);
-		 return user;
+	public  Utilisateur select(int id) throws AppDataAccessException ,UserNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException{
+
+		return  (Utilisateur) connectDB.select(Utilisateur.class,id);
+		
 	}
 	public void delete(int id) throws AppDataAccessException,UserNotFoundException {
-		 	UtilisateurDao utilisateurDao = new UtilisateurDao();
-		 	Utilisateur user = null;
-		 	try {
-				
-				user = utilisateurDao.select(id);
-				String query = "DELETE FROM  tilisateur WHERE id = ?";
-				connectDB.prepare(query);
-				connectDB.setLong(1, id);
-				connectDB.executeUpdate();
-			
-				System.out.println(":: SERVER :: Record was Deleted");
-			}catch (UserNotFoundException e) {
-				throw new UserNotFoundException();
-		}
-		 	catch (Exception e) {
-				throw new AppDataAccessException();
-		 		//e.printStackTrace();
-			}
+	
 		
+		//connectDB.delete(user,id);
 		
 	}
 

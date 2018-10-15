@@ -68,7 +68,7 @@ public class Main {
 		    return Integer.parseInt(valeur);
 	}
 	
-	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
+	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		UtilisateurDao utilisateurDao = new UtilisateurDao();
 		String answer = "";
 		int id ;

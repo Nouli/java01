@@ -132,21 +132,38 @@ public class ConnectDB<T> {
 	public void setInt(int i, int j) throws SQLException {
 		ps.setInt(i, j);
 	}
+	//SqlUtils Update
 
-	
-	public T select(T t, int id) throws UserNotFoundException, AppDataAccessException {
+	// SqlUtils Delete :
+	public void delete	(Class c, int id) throws UserNotFoundException, AppDataAccessException {
+		try {
+			select(c, id);
+			String query = "DELETE FROM  "+databaseName+"  WHERE id = ?";
+			connectDB.prepare(query);
+			connectDB.setInt(1, id);
+			connectDB.executeUpdate();
+		}catch(UserNotFoundException e){
+			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public Object select(Class c, int id) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		ArrayList results = new ArrayList();
+		Object t = c.newInstance();
 		try {
 		// object
-		Class cls = Class.forName(t.getClass().getName());
-		Constructor ct = cls.getConstructor(null);
+		Class cls = c.getClass();
+		Constructor ct = c.getConstructor();
 		List<Field> privateFields = new ArrayList<>();
-		Field[] allFields = t.getClass().getDeclaredFields();
+		Field[] allFields = c.getDeclaredFields();
 
 		// Execute SQL query
 		
-		this.databaseName=cls.getSimpleName();
-		String query = "SELECT * FROM "+databaseName+" Where id=";
+		this.databaseName=c.getSimpleName();
+		//String query = "SELECT * FROM "+databaseName+" Where id=";
+		String query = "SELECT * FROM utilisateur Where id=";
+		
 		this.executeQuery(query + id);
 		if (rs != null) {
 			ResultSetMetaData columns = rs.getMetaData();
@@ -173,7 +190,8 @@ public class ConnectDB<T> {
 									field.setAccessible(true);
 									field.set(t, Enum.valueOf((Class<Enum>) field.getType(), value));
 								} else {
-									field.set(t, rs.getObject(j));
+									field.set(t, rs.getObject(j));;
+			
 								}
 							}
 
@@ -186,12 +204,9 @@ public class ConnectDB<T> {
 			
 		}
 		}catch(Exception e){
-			throw new AppDataAccessException();
-		}if(t == null) {
-			
-			throw new UserNotFoundException();
-	}
-		return t;
+			e.printStackTrace();
+		}
+		return  t;
 
 	}
 }

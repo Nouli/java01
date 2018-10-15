@@ -17,7 +17,7 @@ public class TestgroupeDao {
 
 	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			SQLException, UserNotFoundException {
+			SQLException, UserNotFoundException, AppDataAccessException {
 		// TODO Auto-generated method stub
 		ConnectDB connectDB = ConnectDB.getInstance();
 		GroupeUtilisateurDao groupeDao = new GroupeUtilisateurDao();
@@ -25,12 +25,10 @@ public class TestgroupeDao {
 		UtilisateurDao userDao = new UtilisateurDao();
 		/*
 		 *
-		 **/ try {
-			Utilisateur user1 = new Utilisateur();
-			user1 = userDao.select(14);
-			System.out.println(user1.toString());
+		 **/ try {			
+			System.out.println(userDao.select(24));
 		} catch (Exception e) {
-			System.out.println("User Not found");
+			e.printStackTrace();
 		}
 	}
 }
