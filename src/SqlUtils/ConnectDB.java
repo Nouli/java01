@@ -89,11 +89,10 @@ public class ConnectDB {
 	public <T extends Entity> void update (T t,int id) throws UserNotFoundException, AppDataAccessException {
 			List<Field> privateFields = new ArrayList<>();
 			Field[] allFields = t.getClass().getDeclaredFields();
-			//UPDATE `projet`.`utilisateur` SET `firstName` = 'amma', `lastName` = 'moo', `gender` = 'female', `age` = '222' WHERE (`id` = '12');
 			this.databaseName=t.getClass().getSimpleName();
 
 			try {
-
+				select(t.getClass(), id);
 				String query1 = "SELECT * FROM "+databaseName+"";
 				connectDB.executeQuery(query1);
 				String query = "UPDATE "+databaseName+" SET";
@@ -121,25 +120,25 @@ public class ConnectDB {
 					}
 				query = query.substring(0, query.length()-2);
 				query +="where ( id = "+id+")";
-				System.out.println(query);	
 				connectDB.prepare(query);
 				connectDB.executeUpdate();
 					
-				}	catch(Exception e){
-				e.printStackTrace();
+				}	catch(UserNotFoundException e){
+					throw new UserNotFoundException();
+			}catch(AppDataAccessException | SQLException e){
+				throw new AppDataAccessException();
+			}catch (IllegalAccessException e) {
+				throw new AppDataAccessException();
 			}
 		
 	}
 	//SqlUtils Insert
-	public <T extends Entity> void insert (T t) throws UserNotFoundException, AppDataAccessException {
+	public <T extends Entity> void insert (T t) throws AppDataAccessException {
 		ArrayList<String> results = new ArrayList<String>();
 		List<Field> privateFields = new ArrayList<>();
 		Field[] allFields = t.getClass().getDeclaredFields();
 		
 		try {
-
-			//INSERT INTO `projet`.`utilisateur` (firstName, lastName, gender, age) VALUES ('atat', 'yaya', 'male', '155');
-
 			this.databaseName=t.getClass().getSimpleName();
 			String query1 = "SELECT * FROM utilisateur";
 			String query = "INSERT INTO "+databaseName+" (";
@@ -154,7 +153,6 @@ public class ConnectDB {
 				}	
 				query = query.substring(0, query.length()-2);
 				query += ") VALUES (";
-					System.out.println(query);
 					for (Field field : allFields) {
 						if (Modifier.isPrivate(field.getModifiers())) {
 							privateFields.add(field);
@@ -175,8 +173,9 @@ public class ConnectDB {
 					connectDB.prepare(query);
 					connectDB.executeUpdate();
 			}	
-		}catch(Exception e){
-			e.printStackTrace();
+		}
+		catch(SQLException|IllegalAccessException e){
+			throw new AppDataAccessException();
 		}
 	}
 	// SqlUtils Delete :
@@ -188,15 +187,16 @@ public class ConnectDB {
 			connectDB.setInt(1, id);
 			connectDB.executeUpdate();
 		}catch(UserNotFoundException e){
-			e.printStackTrace();
-		}catch(Exception e){
-			e.printStackTrace();
+			throw new UserNotFoundException();
+		}catch(AppDataAccessException | SQLException e){
+			throw new AppDataAccessException();
 		}
 	}
-	public <T extends Entity> T select(Class<T> c, int id) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	public <T extends Entity> T select(Class<T> c, int id) throws AppDataAccessException, UserNotFoundException  {
 		ArrayList<HashMap<String, Object>> results = new ArrayList<HashMap<String, Object>>();
-		T t = c.newInstance();
+		T t;
 		try {
+		t = c.newInstance();
 		List<Field> privateFields = new ArrayList<>();
 		Field[] allFields = c.getDeclaredFields();
 
@@ -238,11 +238,16 @@ public class ConnectDB {
 					}
 
 				}
-				results.add(cols);
 			}		
 		}
-		}catch(Exception e){
-			e.printStackTrace();
+		}catch(SQLException e){
+			throw new AppDataAccessException();
+		}catch (InstantiationException | IllegalAccessException e1) {
+			throw new AppDataAccessException();
+		}
+		
+		if(t==null) {
+			throw new UserNotFoundException();
 		}
 		return  t;
 

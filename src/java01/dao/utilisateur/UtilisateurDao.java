@@ -12,16 +12,16 @@ public class UtilisateurDao {
 	 
 	ConnectDB connectDB = ConnectDB.getInstance();
 
-	public void insert(Utilisateur user) throws AppDataAccessException {
+	public void insert(Utilisateur user)  {
 	try {
 		connectDB.insert(user);
 		}catch (Exception e ) {	
-		throw new AppDataAccessException();
+		System.out.println("cannot access data");
 	}
 	
 	}
-	public  Utilisateur select(int id) throws AppDataAccessException ,UserNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException{
-
+	public  Utilisateur select(int id) throws AppDataAccessException ,UserNotFoundException{
+		
 		return  (Utilisateur) connectDB.select(Utilisateur.class,id);
 		
 	}
@@ -31,9 +31,15 @@ public class UtilisateurDao {
 		
 	}
 
-	public void update(Utilisateur user,int id) throws AppDataAccessException ,UserNotFoundException{
+	public void update(Utilisateur user,int id){
 
-		connectDB.update(user, id);
+		try {
+			connectDB.update(user, id);
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+		} catch (AppDataAccessException e) {
+			e.printStackTrace();
+		}
 
 	}
 /*

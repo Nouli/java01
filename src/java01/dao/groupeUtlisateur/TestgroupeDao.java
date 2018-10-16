@@ -19,14 +19,7 @@ public class TestgroupeDao {
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			SQLException, UserNotFoundException, AppDataAccessException {
 		// TODO Auto-generated method stub
-		Utilisateur user = new Utilisateur("hassanmodified", "mimonmodified", Gender.male, 15);
 		UtilisateurDao userDao = new UtilisateurDao();
-		/*
-		 *
-		 **/ try {			
-			userDao.update(user,12);
-		} catch (Exception e) {
-			e.printStackTrace();
+		System.out.println(userDao.select(121).toString());
 		}
-	}
 }
