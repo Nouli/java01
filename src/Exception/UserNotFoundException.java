@@ -2,7 +2,7 @@ package Exception;
 
 public class UserNotFoundException extends Exception{
  public UserNotFoundException() {
-	 super("Not found");
+	 super("404 : User not found");
  }
  public UserNotFoundException(String message) {
 	 super (message);

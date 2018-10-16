@@ -96,7 +96,7 @@ public class Main {
 			    break;
 			  case "2":			    
 			    try {
-					utilisateurDao.insert(insertUtilisateur());
+					utilisateurDao.save(insertUtilisateur());
 				} catch (Exception e1) {
 					// TODO Auto-generated catchblock
 					e1.printStackTrace();

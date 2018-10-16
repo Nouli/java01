@@ -15,11 +15,13 @@ import java01.entity.Utilisateur;
 
 public class TestgroupeDao {
 
-	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			SQLException, UserNotFoundException, AppDataAccessException {
+	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
 		// TODO Auto-generated method stub
-		UtilisateurDao userDao = new UtilisateurDao();
-		System.out.println(userDao.select(121).toString());
+		UtilisateurDao userDao = new UtilisateurDao(Utilisateur.class);
+		try {
+		System.out.println(userDao.select(12).toString());
+		}catch(UserNotFoundException e){
+			System.out.println(e.getMessage());
+		}
 		}
 }
