@@ -24,7 +24,7 @@ public class EntityDao<T extends Entity> {
 		try {
 			dataAccess.insert(t);
 		} catch (Exception e) {
-			System.out.println("cannot access data");
+			e.printStackTrace();
 		}
 	}
 	
@@ -33,8 +33,7 @@ public class EntityDao<T extends Entity> {
 		
 	}
 	public <T extends Entity> void delete(int id) throws AppDataAccessException,UserNotFoundException {
-		Class< ? extends T > c=null;
-		dataAccess.delete(c,id);
+		dataAccess.delete(entityClass,id);
 		
 	}
 	public <T extends Entity> void update(T t,int id){
@@ -47,6 +46,9 @@ public class EntityDao<T extends Entity> {
 			e.printStackTrace();
 		}
 
+	}
+	public <T> ArrayList<T>  findAll() throws AppDataAccessException ,UserNotFoundException{
+		return  (ArrayList<T>) dataAccess.findAll(entityClass);	
 	}
 
 }

@@ -1,7 +1,11 @@
 package Exception;
 
 public class UserNotFoundException extends Exception{
- public UserNotFoundException() {
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+public UserNotFoundException() {
 	 super("404 : User not found");
  }
  public UserNotFoundException(String message) {

@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import org.apache.commons.lang3.EnumUtils;
 import Exception.AppDataAccessException;
@@ -20,7 +22,6 @@ public class Main {
 	    } catch(NullPointerException e) {
 	        return false;
 	    }
-	    // only got here if we didn't return false
 	    return true;
 	}
 
@@ -66,8 +67,8 @@ public class Main {
 		    return Integer.parseInt(valeur);
 	}
 	
-	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		UtilisateurDao utilisateurDao = new UtilisateurDao();
+	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
+		UtilisateurDao utilisateurDao = new UtilisateurDao(Utilisateur.class);
 		String answer = "";
 		int id ;
 		String valeur;
@@ -87,20 +88,16 @@ public class Main {
 			{
 			  case "1":
 				  System.out.println("Lite des utilisateurs");
-				   /* ArrayList<Utilisateur> utilisateurs = utilisateurDao.findAll();
+				   ArrayList<Utilisateur> utilisateurs = utilisateurDao.findAll();
 					Iterator<Utilisateur> iterator = utilisateurs.iterator();
 					while (iterator.hasNext()) {
 						System.out.println(iterator.next());
-					}*/
+					}
 					System.out.println(menu);
 			    break;
-			  case "2":			    
-			    try {
-					utilisateurDao.save(insertUtilisateur());
-				} catch (Exception e1) {
-					// TODO Auto-generated catchblock
-					e1.printStackTrace();
-				}
+			  case "2":		
+				  
+			    utilisateurDao.save(insertUtilisateur());
 			    System.out.println(menu);
 			    break;
 			  case "3":
