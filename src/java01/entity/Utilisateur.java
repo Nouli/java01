@@ -2,7 +2,7 @@ package java01.entity;
 
 public class Utilisateur extends Entity{
 	
-	private long id;
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private Gender gender;
@@ -27,7 +27,7 @@ public class Utilisateur extends Entity{
 		System.out.println(this.toString());
 		
 	}
-	public Utilisateur(long id,String firstName, String lastName, Gender gender, int age) {
+	public Utilisateur(Long id,String firstName, String lastName, Gender gender, int age) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -37,10 +37,10 @@ public class Utilisateur extends Entity{
 		
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getFirstName() {

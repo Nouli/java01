@@ -28,15 +28,15 @@ public class EntityDao<T extends Entity> {
 		}
 	}
 	
-	public  <T extends Entity> T select(int id) throws AppDataAccessException ,UserNotFoundException{
+	public  <T extends Entity> T select(Long id) throws AppDataAccessException ,UserNotFoundException{
 		return  (T) dataAccess.select(entityClass,id);
 		
 	}
-	public <T extends Entity> void delete(int id) throws AppDataAccessException,UserNotFoundException {
+	public <T extends Entity> void delete(Long id) throws AppDataAccessException,UserNotFoundException {
 		dataAccess.delete(entityClass,id);
 		
 	}
-	public <T extends Entity> void update(T t,int id){
+	public <T extends Entity> void update(T t,Long id){
 
 		try {
 			dataAccess.update(t, id);

@@ -56,21 +56,21 @@ public class Main {
 		    return user;
 	}
 	
-	public static int IdInteger(String valeur) {
+	public static Long IdInteger(String valeur) {
 		  while(isInteger(valeur)==false) {
-			    sc2 = new Scanner(System.in);
+			    sc = new Scanner(System.in);
 		    	System.out.println("pensez à taper des chiffres");
 		    	System.out.println("Inserer l'Id correspendante à l'utilisateur que vous souhaiter supprimer ;(pour annuler taper 0) :");
 		    	System.out.println("----------------------------------------------------------------------------------------------");
-		    	valeur = sc2.nextLine();
+		    	valeur = sc.nextLine();
 		    }
-		    return Integer.parseInt(valeur);
+		    return (long) Integer.parseInt(valeur);
 	}
 	
 	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
 		UtilisateurDao utilisateurDao = new UtilisateurDao(Utilisateur.class);
 		String answer = "";
-		int id ;
+		Long id ;
 		String valeur;
 		
 		

@@ -19,7 +19,7 @@ public class GroupeUtilisateur extends Entity{
 	public void setUtilisateurs(List<Utilisateur> utilisateurs) {
 		this.utilisateurs = utilisateurs;
 	}
-	public GroupeUtilisateur(long id, Role name, List<Utilisateur> utilisateurs) {
+	public GroupeUtilisateur(Long id, Role name, List<Utilisateur> utilisateurs) {
 		super();
 		this.name = name;
 		this.utilisateurs = utilisateurs;
