@@ -2,7 +2,6 @@ package java01.entity;
 
 public class Utilisateur extends Entity{
 	
-	private Long id;
 	private String firstName;
 	private String lastName;
 	private Gender gender;
@@ -61,8 +60,8 @@ public class Utilisateur extends Entity{
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public String getGender() {
-		return gender.toString();
+	public Gender getGender() {
+		return gender;
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;

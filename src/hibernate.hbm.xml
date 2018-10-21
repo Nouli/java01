@@ -1,0 +1,44 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="java01.entity.Utilisateur" table="utilisateur">
+
+		<meta attribute="class-description">
+			This class contains the user detail.
+		</meta>
+
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="firstName" column="firstName" type="string" />
+		<property name="lastName" column="lastName" type="string" />
+		<property name="gender" column="gender">
+    		<type name="org.hibernate.type.EnumType">
+        		<param name="enumClass">java01.entity.Gender</param>
+        		<param name="type">12</param>
+    		</type>
+		</property>
+ 		
+		<property name="age" column="age" type="int" />
+
+	</class>
+
+	<class name="java01.entity.GroupeUtilisateur" table="groupeutilisateur">
+
+		<meta attribute="class-description">
+			This class contains GroupeUsers.
+		</meta>
+
+		<id name="id" type="int" column="long">
+			<generator class="native" />
+		</id>
+
+		<property name="name" column="name" type="string" />
+
+	</class>
+
+</hibernate-mapping>

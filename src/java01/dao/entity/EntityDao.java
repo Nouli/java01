@@ -2,14 +2,16 @@ package java01.dao.entity;
 
 import java.util.ArrayList;
 
-import DataAccess.DataAccess;
+import DataAccess.DataAccessHibernate;
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
+import SqlUtils.DataAccess;
 import java01.entity.Entity;
 
 
 public class EntityDao<T extends Entity> {
 	DataAccess dataAccess = new DataAccess();
+	DataAccessHibernate dataAccess2 = new DataAccessHibernate();
 	protected Class<T> entityClass;
 	public EntityDao(Class<T> entityClass)
 	{
@@ -22,18 +24,18 @@ public class EntityDao<T extends Entity> {
 	// insert
 	public <T extends Entity> void save(T t) {
 		try {
-			dataAccess.insert(t);
+			dataAccess2.save(t);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public  <T extends Entity> T select(Long id) throws AppDataAccessException ,UserNotFoundException{
-		return  (T) dataAccess.select(entityClass,id);
+		return  (T) dataAccess2.select(entityClass,id);
 		
 	}
 	public <T extends Entity> void delete(Long id) throws AppDataAccessException,UserNotFoundException {
-		dataAccess.delete(entityClass,id);
+		dataAccess2.delete(entityClass,id);
 		
 	}
 	public <T extends Entity> void update(T t,Long id){
@@ -48,7 +50,7 @@ public class EntityDao<T extends Entity> {
 
 	}
 	public <T> ArrayList<T>  findAll() throws AppDataAccessException ,UserNotFoundException{
-		return  (ArrayList<T>) dataAccess.findAll(entityClass);	
+		return  (ArrayList<T>) dataAccess2.findAll(entityClass);	
 	}
 
 }

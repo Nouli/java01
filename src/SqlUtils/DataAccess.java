@@ -1,4 +1,4 @@
-package DataAccess;
+package SqlUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.sql.Statement;
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
-import SqlUtils.ConnectDB;
+import Jbdc.ConnectDB;
 import java01.entity.Entity;
 
 public class DataAccess {
