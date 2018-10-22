@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import Exception.AppDataAccessException;
 import Exception.UserNotFoundException;
 import HibernateUtils.HibernateUtil;
@@ -13,40 +15,42 @@ import java01.entity.Entity;
 
 public class DataAccessHibernate {
 	private static Logger logger = Logger.getLogger("DataAccess");
-
+	  SessionFactory sf = HibernateUtil.getSessionFactory();
+	  Session session = sf.openSession();
 	public DataAccessHibernate() {
 
 	}
 	// Hibernate Utils
 	public <T extends Entity> void update(T t, Long id) throws AppDataAccessException, UserNotFoundException
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		t=(T) select(t.getClass(),id);
+		T t1=(T) select(t.getClass(),id);
+		session.update(t1);
+		session.getTransaction().begin();
 		session.getTransaction().commit();
-		
+		//session.close();
 	}
 	
-	// Delete public <T extends Entity> void delete(Class<T> c, Long id)
+
 	public <T extends Entity> void delete(Class<T> type, Long id) throws AppDataAccessException, UserNotFoundException {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.delete(select(type,id));
-		session.getTransaction().commit();
+		if(!session.isOpen()) {
+			session.beginTransaction();
+			}
 		
+		session.delete(select(type,id));
+		session.getTransaction().begin();
+		session.getTransaction().commit();
+
 	}
 	public <T extends Entity> void save(T t) {
 		try {
-
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			if(!session.isOpen()) {
 			session.beginTransaction();
+			}
 			session.save(t);
-			session.getTransaction().commit();
-			session.close();
 			logger.info(t.getClass().getSimpleName() + " : " + t.toString() + " added ");
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			HibernateUtil.getSessionFactory().close();
-		}
+		} 
 
 	}
 
@@ -56,10 +60,11 @@ public class DataAccessHibernate {
 		T t;
 		try {
 			t = type.newInstance();
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
+			if(!session.isOpen()) {
+				session.beginTransaction();
+				}
 			t = session.get(type, id);
-			session.close();
+			//session.close();
 			logger.info(type.getSimpleName() + " : select on id =" + id);
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new AppDataAccessException();
@@ -74,11 +79,12 @@ public class DataAccessHibernate {
 	// findALL
 	public <T extends Entity> ArrayList<T> findAll(Class<T> type) throws  AppDataAccessException, UserNotFoundException {
 		ArrayList<T> entities = new ArrayList<T>();
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		if(!session.isOpen()) {
+			session.beginTransaction();
+			}
 		String query = "from "+type.getSimpleName();
 		entities=(ArrayList<T>) session.createQuery(query).getResultList();
-		session.close();
+		//session.close();
 		return entities;
 	}
 }

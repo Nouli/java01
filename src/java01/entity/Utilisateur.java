@@ -14,6 +14,11 @@ public class Utilisateur extends Entity{
 	}
 
 
+	public void setGroupe(GroupeUtilisateur groupe) {
+		this.groupe = groupe;
+	}
+
+
 	public Utilisateur() {
 
 	}

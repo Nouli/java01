@@ -132,9 +132,8 @@ public class Main {
 							utilisateurDao.delete(id);
 							}
 						 }catch(UserNotFoundException e){
-							 //System.out.println("l'Utilisateur choisis n'existe pas");
 							 
-							 logger.error(e.getMessage());
+							 logger.error(e.getMessage()+" "+id);
 						 }catch(AppDataAccessException e) {
 							 logger.fatal(e.getMessage());
 						 }

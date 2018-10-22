@@ -24,7 +24,8 @@
 		</property>
  		
 		<property name="age" column="age" type="int" />
-
+		<many-to-one name="groupe" class="java01.entity.GroupeUtilisateur"
+            column="groupe_Id" not-null="true"/>
 	</class>
 
 	<class name="java01.entity.GroupeUtilisateur" table="groupeutilisateur">
@@ -38,7 +39,14 @@
 		</id>
 
 		<property name="name" column="name" type="string" />
-
+		  <set name="utilisateurs" table="Utilisateur" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="groupe_Id" not-null="true" />
+            </key>
+            <one-to-many class="java01.entity.Utilisateur" />
+        </set>
+		
 	</class>
 
 </hibernate-mapping>
