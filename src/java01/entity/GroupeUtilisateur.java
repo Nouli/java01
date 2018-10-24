@@ -38,12 +38,7 @@ public class GroupeUtilisateur extends Entity{
 		super();
 		this.name = name;
 	}
-	public void addUser(Utilisateur user) {
-		this.utilisateurs.add(user);
-	}
-	public void deleteUser(Utilisateur user) {
-		this.utilisateurs.remove(user);
-	}
+
 	@Override
 	public String toString() {
 		return "GroupeUtilisateur [name=" + name + ", utilisateurs=" + utilisateurs.toString() + "]";

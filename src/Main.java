@@ -68,7 +68,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) throws UserNotFoundException, AppDataAccessException {
-		UtilisateurDao utilisateurDao = new UtilisateurDao(Utilisateur.class);
+		UtilisateurDao utilisateurDao = new UtilisateurDao();
 		String answer = "";
 		Long id ;
 		String valeur;		
@@ -107,7 +107,7 @@ public class Main {
 					    id = IdInteger(valeur);
 				try {
 					utilisateurDao.select(id);
-					utilisateurDao.update(insertUtilisateur(),id);	
+					utilisateurDao.update(insertUtilisateur());	
 				}catch(UserNotFoundException  e) {
 					logger.info(e.getMessage());
 				}

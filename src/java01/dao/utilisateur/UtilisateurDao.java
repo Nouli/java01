@@ -7,11 +7,7 @@ import java01.entity.Utilisateur;
 public class UtilisateurDao extends EntityDao  {
 	 
 	public UtilisateurDao() {
-
-	}
-	public UtilisateurDao(Class<?> entityClass) {
 		super(Utilisateur.class);
 	}
-
 }
 	

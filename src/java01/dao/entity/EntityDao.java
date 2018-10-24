@@ -10,14 +10,10 @@ import java01.entity.Entity;
 
 
 public class EntityDao<T extends Entity> {
-	DataAccess dataAccess = new DataAccess();
+	//DataAccess dataAccess = new DataAccess();
 	DataAccessHibernate dataAccess2 = new DataAccessHibernate();
 	protected Class<T> entityClass;
 	public EntityDao(Class<T> entityClass)
-	{
-		this.entityClass = entityClass;
-	}
-	public EntityDao()
 	{
 		this.entityClass = entityClass;
 	}
@@ -38,15 +34,11 @@ public class EntityDao<T extends Entity> {
 		dataAccess2.delete(entityClass,id);
 		
 	}
-	public <T extends Entity> void update(T t,Long id){
+	@SuppressWarnings("hiding")
+	public <T extends Entity> void update(T t){
 
-		try {
-			dataAccess.update(t, id);
-		} catch (UserNotFoundException e) {
-			e.printStackTrace();
-		} catch (AppDataAccessException e) {
-			e.printStackTrace();
-		}
+			dataAccess2.update(t);
+	
 
 	}
 	public <T> ArrayList<T>  findAll() throws AppDataAccessException ,UserNotFoundException{

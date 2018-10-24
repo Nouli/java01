@@ -25,7 +25,7 @@
  		
 		<property name="age" column="age" type="int" />
 		<many-to-one name="groupe" class="java01.entity.GroupeUtilisateur"
-            column="groupe_Id" not-null="true"/>
+            column="groupe_Id" not-null="false"/>
 	</class>
 
 	<class name="java01.entity.GroupeUtilisateur" table="groupeutilisateur">
@@ -38,11 +38,16 @@
 			<generator class="native" />
 		</id>
 
-		<property name="name" column="name" type="string" />
+		<property name="name" column="name">
+			<type name="org.hibernate.type.EnumType">
+        		<param name="enumClass">java01.entity.Role</param>
+        		<param name="type">12</param>
+    		</type>
+    	</property>
 		  <set name="utilisateurs" table="Utilisateur" 
 				inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="groupe_Id" not-null="true" />
+                <column name="groupe_Id" not-null="false" />
             </key>
             <one-to-many class="java01.entity.Utilisateur" />
         </set>
